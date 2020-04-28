@@ -1,0 +1,8 @@
+{
+  "name": "designer-status",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:d00fy/designer-status.git",
+  "author": "d00fy <doofy2020@icloud.com>",
+  "license": "MIT"
+}
