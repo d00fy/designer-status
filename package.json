@@ -6,7 +6,8 @@
   "author": "d00fy <doofy2020@icloud.com>",
   "license": "MIT",
   "dependencies": {
-    "chart.js": "^2.9.3"
+    "chart.js": "^2.9.3",
+    "firebase": "^7.14.2"
   },
   "devDependencies": {
     "webpack": "^4.43.0",

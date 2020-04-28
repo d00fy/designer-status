@@ -1,6 +1,12 @@
 //import
 import Chart from 'chart.js'
+// //yarn add firebase & config.js をinitするのみ。
+// import firebase from "firebase";
+// import { firebaseConfig } from "../../config-firebase";
+// firebase.initializeApp(firebaseConfig);
+// console.log(firebase.storage())
 
+import firebase from '../../config-firebase';
 
 //DOM取得
 const ctx = document.getElementById("radarChart");
@@ -63,7 +69,7 @@ const options = {// maintainAspectRatio: false,
         }
     }
 }
-//-----------------うな１０
+//-----------------うなcanvas
 window.onload = () => {
     //baseに画像を描画
     drawBase();
@@ -71,9 +77,12 @@ window.onload = () => {
     //radarChartを描画 ここどうするかよな。
     // drawImage2();
 
-    // 「+」ボタンを押したら合成
+    //ボタンを押したら合成、そしてstorageへUP
     document.getElementById("create").addEventListener("click", () => {
-        concatCanvas("fusion", ["base", "radarChart"]);
+        concatCanvas("fusion", ["base", "radarChart"]).then(value => {
+            uploadStorage(value);
+            console.log(value); // => resolve!!
+        });
     });
 
 };
@@ -97,6 +106,9 @@ async function concatCanvas(base, asset) {
         const image1 = await getImagefromCanvas(asset[i]);
         ctx.drawImage(image1, 0, 0, canvas.width, canvas.height);
     }
+    //onloadとか上でしなくて大丈夫かな?
+    const url = ctx.canvas.toDataURL();
+    return url;
 }
 
 //canvas要素(画像src)取得関数
@@ -120,9 +132,19 @@ window.rangeValue = function (value, name) {
         options: options,
     });
 }
-// elem.addEventListener('input', rangeValue(elem));
 
-//------テスト関数定義
+//ひとまず、、つまり上記の理屈が正しい場合、.thenの中に、firebaseに関する関数を書けばよい。
+function uploadStorage(url) {
+
+    const sRef = firebase.storage().ref()
+    const fileRef = sRef.child(`test.png`)
+    url = url.substring(22);
+    fileRef.putString(url, "base64").then(function (snapshot) {
+        fileRef.getDownloadURL().then(function (url) {
+            console.log("ok");
+        });
+    });
+}
 
 
 
