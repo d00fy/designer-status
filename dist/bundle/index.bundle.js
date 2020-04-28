@@ -79487,8 +79487,8 @@ window.onload = () => {
     //ボタンを押したら合成、そしてstorageへUP
     document.getElementById("create").addEventListener("click", () => {
         concatCanvas("fusion", ["base", "radarChart"]).then(value => {
-            uploadStorage(value);
             console.log(value); // => resolve!!
+            uploadStorage(value);
         });
     });
 
@@ -79541,16 +79541,19 @@ window.rangeValue = function (value, name) {
 }
 
 //ひとまず、、つまり上記の理屈が正しい場合、.thenの中に、firebaseに関する関数を書けばよい。
-function uploadStorage(url) {
-
+async function uploadStorage(url) {
     const sRef = _config_firebase__WEBPACK_IMPORTED_MODULE_1__["default"].storage().ref()
     const fileRef = sRef.child(`test.png`)
     url = url.substring(22);
+    //多分ここら変が非同期処理。。
     fileRef.putString(url, "base64").then(function (snapshot) {
         fileRef.getDownloadURL().then(function (url) {
             console.log("ok");
-        });
+        }).then(() => {
+            window.location.href = "https://designer-status.firebaseapp.com/s/";
+        })
     });
+
 }
 
 
