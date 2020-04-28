@@ -1,3 +1,7 @@
+//import
+import Chart from 'chart.js'
+
+
 //DOM取得
 const ctx = document.getElementById("radarChart");
 ctx.width = window.innerWidth * 0.1;
@@ -105,8 +109,9 @@ function getImagefromCanvas(id) {
         image.src = ctx.canvas.toDataURL();
     });
 }
+
 //-----スライダー制御関数
-const rangeValue = function (value, name) {
+window.rangeValue = function (value, name) {
     const id = Number(name);
     radarVals[id] = value
     const myRadarChart = new Chart(ctx, {
