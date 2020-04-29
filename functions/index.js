@@ -7,7 +7,7 @@ const app = express() //一応
 
 //asset
 // const bucketName = 'designer-status.appspot.com';
-// const filePath = `ogp/${name}.png`;
+// const filePath = `${name}.png`;
 
 
 
@@ -62,7 +62,7 @@ exports.result = functions.https.onRequest((request, response) => {
         let param = request.params[0].slice(1)
         const paramName = param.substring(7);
         const bucketName = 'designer-status.appspot.com';
-        const filePath = `ogp/${paramName}.png`;
+        const filePath = `ogp/${paramName}`;
         const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(filePath)}?alt=media`;
 
         const html = genHtml(paramName, publicUrl)
