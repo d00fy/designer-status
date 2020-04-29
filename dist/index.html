@@ -19,37 +19,36 @@
 
 <body>
   <h1>ページ1</h1>
-  <a href="/share.html">ひとつ上のディレクトリへ</a><br>
-
-  <section id="contents">
-    <div class="flex-container">
-      <!-- 合成するcanvasその1 -->
-      <canvas class="non" id="base" width="1200" height="630"></canvas>
-
-      <input type="range" name="0" min="0" max="10" step="2" value="6" onchange="rangeValue(value,name)">
-      <input type="range" name="1" min="0" max="10" step="2" value="6" onchange="rangeValue(value,name)">
-      <input type="range" name="2" min="0" max="10" step="2" value="6" onchange="rangeValue(value,name)">
-      <input type="range" name="3" min="0" max="10" step="2" value="6" onchange="rangeValue(value,name)">
-      <input type="range" name="4" min="0" max="10" step="2" value="6" onchange="rangeValue(value,name)">
-      <input type="range" name="5" min="0" max="10" step="2" value="6" onchange="rangeValue(value,name)">
-
-      <!-- ここではじめてレンダリング addeveにするかinput btnにしてonchangeにするか -->
-      <div id="show">結果を表示する</div>
-      <!-- 合成するcanvasその2 -->
-      <canvas id="radarChart"></canvas>
-
-      <!-- クエリパラやpostパラでなく、パスパラ的なので渡してみる -->
-      <div>名前つける:<input type="text" value="Your name" onchange="getName(this.value)"></div>
-
-      <!--画像を合成し、storageへUP ここで、ページとぶときに、Inputnameをまず飛ばしたい(valueを取得) -->
-      <div id="create">診断する</div>
-
-      <!-- 合成結果用のcanvas こいつと、basepngを隠すなり遠いスクロールににする -->
-      <canvas class="non" id="fusion" width="1200" height="630"></canvas>
 
 
+  <!-- 合成するcanvasその1 -->
+  <canvas class="non" id="base" width="600" height="314"></canvas>
 
-  </section>
+  <div class="sliders">
+    <input class="input-range" type="range" name="0" min="0" max="10" step="2" value="6"
+      onchange="rangeValue(value,name)">
+    <input type="range" name="1" min="0" max="10" step="2" value="6" onchange="rangeValue(value,name)">
+    <input type="range" name="2" min="0" max="10" step="2" value="6" onchange="rangeValue(value,name)">
+    <input type="range" name="3" min="0" max="10" step="2" value="6" onchange="rangeValue(value,name)">
+    <input type="range" name="4" min="0" max="10" step="2" value="6" onchange="rangeValue(value,name)">
+    <input type="range" name="5" min="0" max="10" step="2" value="6" onchange="rangeValue(value,name)">
+  </div>
+  <div id="show">結果を表示する</div>
+
+  <!-- ここではじめてレンダリング addeveにするかinput btnにしてonchangeにするか -->
+  <!-- 合成するcanvasその2 -->
+  <div style="width:100%; height:100%;">
+    <canvas id="radarChart"></canvas>
+  </div>
+
+  <!-- クエリパラやpostパラでなく、パスパラ的なので渡してみる -->
+  <div>名前つける:<input type="text" value="Your name" onchange="getName(this.value)"></div>
+
+  <!--画像を合成し、storageへUP ここで、ページとぶときに、Inputnameをまず飛ばしたい(valueを取得) -->
+  <div id="create">診断する</div>
+
+  <!-- 合成結果用のcanvas こいつと、basepngを隠すなり遠いスクロールににする -->
+  <canvas class="non" id="fusion" width="600" height="314"></canvas>
 
 
   <!-- <script src="../dist/index.bundle.js"></script> -->

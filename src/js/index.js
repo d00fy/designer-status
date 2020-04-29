@@ -12,8 +12,6 @@ import firebase from '../../config-firebase';
 const ctx = document.getElementById("radarChart");
 // ctx.width = window.innerWidth * 0.1;
 // ctx.height = window.innerHeight * 0.1;
-ctx.width = 1200;
-ctx.height = 630;
 
 const elem = document.getElementById('range');
 
@@ -53,7 +51,7 @@ const options = {// maintainAspectRatio: false,
         },
         pointLabels: {
             //pc版(16)と帰る必要あり(iphone10標準)
-            fontSize: 8
+            fontSize: 16
         },
         ticks: {
             beginAtZero: true,
@@ -105,11 +103,11 @@ async function concatCanvas(fusion, asset) {
     const canvas = document.getElementById(fusion);
     const ctx = canvas.getContext("2d");
 
-    let dx = -200;
+    let dx = -100;
     for (let i = 0; i < asset.length; i++) {
         const image1 = await getImagefromCanvas(asset[i]);
         ctx.drawImage(image1, dx, 0, canvas.width, canvas.height);
-        dx = dx + 200;
+        dx = dx + 100;
     }
     //onloadとか上でしなくて大丈夫かな?
     const url = ctx.canvas.toDataURL();
@@ -151,7 +149,7 @@ document.getElementById("show").onclick = function () {
 //ひとまず、、つまり上記の理屈が正しい場合、.thenの中に、firebaseに関する関数を書けばよい。
 async function uploadStorage(url) {
     const sRef = firebase.storage().ref()
-    const fileRef = sRef.child(`test.png`)
+    const fileRef = sRef.child(`ogp/${name}`)
     url = url.substring(22);
     //多分ここら変が非同期処理。。
     fileRef.putString(url, "base64").then(function (snapshot) {
