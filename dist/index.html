@@ -19,14 +19,12 @@
 
 <body>
   <h1>ページ1</h1>
+  <a href="/share.html">ひとつ上のディレクトリへ</a><br>
 
   <section id="contents">
     <div class="flex-container">
       <!-- 合成するcanvasその1 -->
-      <canvas id="base" width="1200" height="630"></canvas>
-
-      <!-- 合成するcanvasその2 -->
-      <canvas id="radarChart"></canvas>
+      <canvas class="non" id="base" width="1200" height="630"></canvas>
 
       <input type="range" name="0" min="0" max="10" step="2" value="6" onchange="rangeValue(value,name)">
       <input type="range" name="1" min="0" max="10" step="2" value="6" onchange="rangeValue(value,name)">
@@ -35,12 +33,20 @@
       <input type="range" name="4" min="0" max="10" step="2" value="6" onchange="rangeValue(value,name)">
       <input type="range" name="5" min="0" max="10" step="2" value="6" onchange="rangeValue(value,name)">
 
-      <!--画像を合成し、storageへUP  -->
-      <div id="create">作成する</div>
-      <a id="create" href="https://designer-status.firebaseapp.com/s/">a作成する</a>
+      <!-- ここではじめてレンダリング addeveにするかinput btnにしてonchangeにするか -->
+      <div id="show">結果を表示する</div>
+      <!-- 合成するcanvasその2 -->
+      <canvas id="radarChart"></canvas>
 
-      <!-- 合成結果用のcanvas -->
-      <canvas id="fusion" width="1200" height="630"></canvas>
+      <!-- クエリパラやpostパラでなく、パスパラ的なので渡してみる -->
+      <div>名前つける:<input type="text" value="Your name" onchange="getName(this.value)"></div>
+
+      <!--画像を合成し、storageへUP ここで、ページとぶときに、Inputnameをまず飛ばしたい(valueを取得) -->
+      <div id="create">診断する</div>
+
+      <!-- 合成結果用のcanvas こいつと、basepngを隠すなり遠いスクロールににする -->
+      <canvas class="non" id="fusion" width="1200" height="630"></canvas>
+
 
 
   </section>

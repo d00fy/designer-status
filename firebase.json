@@ -12,8 +12,8 @@
     ],
     "rewrites": [
       {
-        "source": "/s/**",
-        "function": "s"
+        "source": "/result/**",
+        "function": "result"
       }
     ]
   },

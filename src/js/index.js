@@ -10,15 +10,18 @@ import firebase from '../../config-firebase';
 
 //DOM取得
 const ctx = document.getElementById("radarChart");
-ctx.width = window.innerWidth * 0.1;
-ctx.height = window.innerHeight * 0.1;
+// ctx.width = window.innerWidth * 0.1;
+// ctx.height = window.innerHeight * 0.1;
+ctx.width = 1200;
+ctx.height = 630;
 
 const elem = document.getElementById('range');
 
 const elems = document.getElementsByClassName('range');
 
 //state設定
-const radarVals = [5, 3, 5, 3, 5, 3]
+const radarVals = [5, 3, 5, 3, 5, 3];
+let name = "";
 
 //asset設定
 const data = {
@@ -79,7 +82,7 @@ window.onload = () => {
 
     //ボタンを押したら合成、そしてstorageへUP
     document.getElementById("create").addEventListener("click", () => {
-        concatCanvas("fusion", ["base", "radarChart"]).then(value => {
+        concatCanvas("fusion", ["radarChart", "base"]).then(value => {
             console.log(value); // => resolve!!
             uploadStorage(value);
         });
@@ -98,13 +101,15 @@ function drawBase() {
 }
 
 //合成関数
-async function concatCanvas(base, asset) {
-    const canvas = document.getElementById(base);
+async function concatCanvas(fusion, asset) {
+    const canvas = document.getElementById(fusion);
     const ctx = canvas.getContext("2d");
 
+    let dx = -200;
     for (let i = 0; i < asset.length; i++) {
         const image1 = await getImagefromCanvas(asset[i]);
-        ctx.drawImage(image1, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(image1, dx, 0, canvas.width, canvas.height);
+        dx = dx + 200;
     }
     //onloadとか上でしなくて大丈夫かな?
     const url = ctx.canvas.toDataURL();
@@ -122,16 +127,26 @@ function getImagefromCanvas(id) {
     });
 }
 
+//-----テキスト制御関数
+window.getName = function (value) {
+    console.log("Your name is " + value);
+    name = value;
+    return name;
+}
+
 //-----スライダー制御関数
 window.rangeValue = function (value, name) {
     const id = Number(name);
     radarVals[id] = value
+}
+
+document.getElementById("show").onclick = function () {
     const myRadarChart = new Chart(ctx, {
         type: 'radar',
         data: data,
         options: options,
     });
-}
+};
 
 //ひとまず、、つまり上記の理屈が正しい場合、.thenの中に、firebaseに関する関数を書けばよい。
 async function uploadStorage(url) {
@@ -143,21 +158,10 @@ async function uploadStorage(url) {
         fileRef.getDownloadURL().then(function (url) {
             console.log("ok");
         }).then(() => {
-            window.location.href = "https://designer-status.firebaseapp.com/s/";
+            window.location.href = `https://designer-status.firebaseapp.com/result/${name}`;
         })
     });
 
 }
-
-
-
-//---------
-
-// elems[0].map((elem) => {
-//     target = elems[i].getElementsByTagName('div');
-//     bar = elem.getElementsByTagName('input');
-//     bar.addEventListener('input', rangeValues(bar, target));
-// })
-
 
 //---------------
