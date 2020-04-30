@@ -83,13 +83,15 @@ const app = express()
 app.use(express.static('public'))
 
 
-app.get('/result/:name', function (req, res) {
-  const name = req.params.name;
+app.get('/result/:uid', function (req, res) {
+  const uid = req.params.uid;
   const bucketName = 'designer-status.appspot.com';
-  const filePath = `ogp/${name}`;
+  const filePath = `ogp/${uid}`;
   const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(filePath)}?alt=media`;
 
-  res.render('index.ejs', { name: name, url: publicUrl })
+  //ここでfirestoreから、ドキュメントを取得、、uidを使って？！
+
+  res.render('index.ejs', { uid: uid, url: publicUrl })
 });
 exports.result = functions.https.onRequest(app)
 
