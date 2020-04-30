@@ -1,17 +1,15 @@
 const functions = require('firebase-functions');
-const admin = require('firebase-admin'); //一応
+
+const admin = require('firebase-admin'); //firestoreの3party
+admin.initializeApp(functions.config().firebase)
+// データベースの参照を作成
+const fireStore = admin.firestore()
 
 const express = require('express')
 const app = express()
 
-//これで静的ファイルを読み込む。。(例css)
-//そしてejsに適用する。
-
+//これで静的ファイルを読み込む。。
 // const Storage = require('@google-cloud/storage');
-
-//asset
-// const bucketName = 'designer-status.appspot.com';
-// const filePath = `${name}.png`;
 
 
 
@@ -90,6 +88,13 @@ app.get('/result/:uid', function (req, res) {
   const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(filePath)}?alt=media`;
 
   //ここでfirestoreから、ドキュメントを取得、、uidを使って？！
+  const UsersRef = fireStore.collection('users');
+  // const uId = UsersRef.where('uid', '==', '3');
+  // uId.get().then(function (querySnapshot) {
+  //   querySnapshot.forEach(function (doc) {
+  //     console.log(doc.id, ' => ', doc.data());
+  //   });
+  // });
 
   res.render('index.ejs', { uid: uid, url: publicUrl })
 });
