@@ -88,15 +88,28 @@ app.get('/result/:uid', function (req, res) {
   const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(filePath)}?alt=media`;
 
   //ここでfirestoreから、ドキュメントを取得、、uidを使って？！
-  const UsersRef = fireStore.collection('users');
-  // const uId = UsersRef.where('uid', '==', '3');
-  // uId.get().then(function (querySnapshot) {
-  //   querySnapshot.forEach(function (doc) {
-  //     console.log(doc.id, ' => ', doc.data());
-  //   });
-  // });
+  let radarVals = "test";
 
-  res.render('index.ejs', { uid: uid, url: publicUrl })
+  const usersRef = fireStore.collection('users').doc(uid);
+  console.log(usersRef);
+  usersRef.get()
+    .then(doc => {
+      if (!doc.exists) {
+        //  response.send('No such document!')
+        radarVals = "no such"
+      } else {
+        radarVals = doc.data()
+        res.render('index.ejs', { uid: uid, url: publicUrl, radarVals: doc.data() })
+      }
+    })
+    .catch(err => {
+      // response.send('not found')
+      radarVals = "no funcd"
+    })
+
+  // res.send(radarVals)
+
+  // res.render('index.ejs', { uid: uid, url: publicUrl, radarVals: radarVals })
 });
 exports.result = functions.https.onRequest(app)
 
