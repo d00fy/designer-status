@@ -1,31 +1,335 @@
 <!DOCTYPE html>
 <html lang="ja">
 
-<head>
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/ fb# prefix属性: http://ogp.me/ns/ prefix属性#">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>デザイナーステータス</title>
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@uchibashi" />
-    <meta property="og:url" content="https://designer-status.firebaseapp.com/" />
-    <meta property="og:title" content="テストの結果" />
+    <meta property="og:url" content="https://designer-status.firebaseapp.com/result/<%- uid %>" />
+    <meta property="og:title" content="デザイナーステータス" />
+    <meta property="og:description" content="デザイナー力を自己診断する自己満アプリです。" />
     <meta property="og:image" content="<%- url %>" />
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js"
+        integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
     <style>
+        /* ヘッダーの固定 */
+        div#header-fixed {
+            position: fixed;
+            /* ヘッダーの固定 */
+            top: 0px;
+            /* 位置(上0px) */
+            left: 0px;
+            /* 位置(右0px) */
+            width: 100%;
+            /* 横幅100%　*/
+            height: 140px;
+            /* 縦幅140px */
+        }
 
+        .row {
+            margin-bottom: 2px;
+        }
+
+
+        div#header-bk {
+            background-color: snow;
+            /* 背景色(黒) */
+            padding: 10px 0 20px;
+            /* 上10px、下20pxをあける */
+            height: 40px;
+            /* 縦の高さ110px */
+            width: 100%;
+            /* 横の幅を100% */
+            display: flex;
+        }
+
+        #header {
+            padding-left: 4%;
+        }
+
+        .follow-btn {
+            padding-right: 24px;
+        }
+
+        a.tw-follow-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 66px;
+            height: 20px;
+            color: #fff;
+            font-size: 10px;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            text-decoration: none;
+            line-height: 1;
+            background-color: #1b95e0;
+            border-radius: 3px;
+            letter-spacing: normal;
+        }
+
+        a.tw-follow-btn:hover {
+            background-color: #0c7abf;
+        }
+
+        .hiddenChange {
+            display: none;
+        }
+
+        div#header {
+            /* 表示領域を白枠で囲う */
+            height: 100%;
+            /* 縦の表示領域はheader-bkと同じ */
+            width: 960px;
+            /* 横の幅970px */
+            margin: auto;
+            /* 中央揃え */
+        }
+
+        #header {
+            font-weight: bold;
+        }
+
+        .subheader {
+            padding-top: 40px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        #tweet-area {
+            text-align: center;
+        }
+
+        #myChart {
+            height: 100%;
+            width: 90%;
+            /* text-align: center; */
+            margin-top: 48px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .scorebd {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        .sentences {
+
+            margin-bottom: 18px;
+            text-align: center;
+        }
+
+        .scorebd {
+            margin-bottom: 18px;
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
-    <h1>あなたのスコアは</h1>
-    <div><img src="<%- url %>" alt="サンプル画像"></div>
-    <p class="print"><%- uid %></p>
-    <p class="print"><%- url %></p>
-    <p class="print"><%- radarVals.radarVals[3] %></p>
+    <div id="header-fixed">
+        <div id="header-bk">
+            <div id="header">デザイナーステータス</div>
+            <div class="follow-btn">
+                <a class="tw-follow-btn" href="https://twitter.com/Re_A9T?ref_src=twsrc%5Etfw" target="_blank"
+                    onclick="window.open(this.href, 'window', 'width=600, height=400, menubar=no, toolbar=no, scrollbars=yes'); return false;">Follow</a>
+            </div>
+        </div>
+    </div>
+    <canvas id="myChart"></canvas>
+    <div class="scorebd">Total score is <span class="score"></span>！</div>
+    <div class="sentences">
+        <p class="sentence2"></p>
+    </div>
+
+
+    <form class="col s12" onsubmit="return false;">
+        <div class="row">
+            <div class="input-field col s3"></div>
+            <div class="input-field col s6">
+                <input placeholder="最強UIデザイナー" id="first_name" type="text" value="" onChange=" setTweetButton(value)"
+                    class="validate">
+                <label for="first_name">おなまえ</label>
+            </div>
+            <div class="input-field col s3"></div>
+        </div>
+    </form>
+
+    <div id="tweet-area">
+        <!-- ここにボタンができる-->
+    </div>
+    <script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 
     <script>
+        var radarVals = JSON.parse("<%= JSON.stringify(radarVals) %>");
+        const sum = colscore(radarVals);
+        genExp(radarVals, sum);
+        console.log()
+        //DOM取得
+        const ctx = document.getElementById("myChart");
 
+        //asset設定
+        const data = {
+            labels: ['目', '手', '頭', '口', '足', '心'],
+            datasets: [
+                {
+                    label: 'My Second dataset',
+                    //pc版(5)と帰る必要あり(iphone10標準)
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    backgroundColor: 'rgba(255,99,132,0.2)',
+                    borderColor: 'rgba(255,99,132,1)',
+                    pointBackgroundColor: 'rgba(255,99,132,1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(255,99,132,1)',
+                    data: radarVals,
+                }
+            ]
+        }
+
+        //firestore関連
+
+
+        //-------スコア関数
+        function colscore(array) {
+            let sum = array.reduce(function (accumulator, currentValue, ) {
+                return accumulator + currentValue
+            })
+            sum = sum * 10 / 6
+            let result = sum.toFixed(1);
+            result;
+            if (result == 0) {
+                result = "測定不能"
+            } else if (result === 100.0) {
+                result = 100;
+            }
+            console.log(result)
+            $('.score').text(result);
+            return result;
+        }
+        //-----診断関数
+        function genExp(array, sum) {
+            let sentence2 = "";
+            if (sum < 35) { // 5回より少ない
+                sentence2 = "もう少し自分を高く評価してあげましょう！";
+            }
+            else if (sum < 60) {  // 10回よりも少なかったら
+                sentence2 = "あと一歩で最強デザイナーの仲間入り!?";
+            }
+            else if (sum < 85) {  // それ以外の場合
+                sentence2 = "文句なしのつよつよデザイナーです！"
+            }
+            else if (sum <= 99) {
+                sentence2 = "最強デザイナーの称号を欲しいままにしましょう！"
+            }
+            else if (sum == 100) {
+                sentence2 = "あなたは完全無欠のデザイナー生命体です！"
+            }
+
+            // const part = array.reduce((a, b) => a > b ? a : b);
+            // const prefer = "";
+            // switch (name) {
+            //     case '目':
+            //         prefer = """
+            //         break;
+            //     case '手':
+            //         prefer = ""
+            //         break;
+            //     case '頭':
+            //         // 実行させたい処理を書く
+            //         break;
+            //     case '口':
+            //         // 実行させたい処理を書く
+            //         break;
+            //     case '足':
+            //         // 実行させたい処理を書く
+            //         break;
+            //     case '心':
+            //         // 実行させたい処理を書く
+            //         break;
+            // }
+
+            // let sentence3 = `${part}がすぐれているあなたは、`;
+
+            $(".sentence2").text(sentence2);
+
+        }
+
+        const options = {// maintainAspectRatio: false,
+            legend: {
+                display: false
+            },
+            scale: {
+                gridLines: {
+                    color: ['#f5eec1']
+                },
+                pointLabels: {
+                    //pc版(16)と帰る必要あり(iphone10標準)
+                    fontSize: 20
+                },
+                ticks: {
+                    beginAtZero: true,
+                    stepSize: 2,
+                    max: 10,
+                    display: false
+                },
+                gridLines: {         // 補助線（目盛の線）
+                    display: true,
+                    color: "#E6E6E7"
+                }
+            },
+            plugins: {
+                datalabels: {
+                    display: false
+                }
+            }
+        }
+
+        // 任意のタイミングで呼べば狙ったとおりのテキストのボタンつくれる
+        // 引数増やしていろいろやってもよいですね。
+        function setTweetButton(value) {
+            $('#tweet-area').empty(); //既存のボタン消す
+            // htmlでスクリプトを読んでるからtwttがエラーなく呼べる
+            value += "さんの六式デザインチャート！ -あなたもやってみよう！【デザイナーステータス】";
+            // オプションは公式よんで。
+            twttr.widgets.createShareButton(
+                //拡散するURL、つまり、画像をクリックしたときの遷移先だと思う。いやカードそのもの？ /これないと他の人の時カードみれないのかも
+                "https://designer-status.firebaseapp.com/result/<%- uid %>",
+                document.getElementById("tweet-area"),
+                {
+                    size: "large", //ボタンはでかく
+                    lang: 'ja', // ボタンの表示文字の言語
+                    text: value, //ツイートする文面
+                    hashtags: "デザイナーステータス", // ハッシュタグ
+                    url: "https://designer-status.firebaseapp.com/result/<%- uid %>" //おそらくtitleのしたの でもないのか・
+                }
+            );
+        }
+
+
+        $('#first_name').on('change', function () {
+            // const div = document.getElementById('#twitter')
+            $('#twitter').data('text', 'morning');
+        });
+
+        const myRadarChart = new Chart(ctx, {
+            type: 'radar',
+            data: data,
+            options: options,
+        });
     </script>
 </body>
 

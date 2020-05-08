@@ -6,53 +6,125 @@
   <meta charset="UTF - 8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@uchibashi" />
+  <meta property="og:url" content="https://designer-status.firebaseapp.com/" />
+  <meta property="og:title" content="デザイナーステータス" />
+  <meta property="og:description" content="デザイナー力を自己診断する自己満アプリです。" />
+  <meta property="og:image"
+    content="https://firebasestorage.googleapis.com/v0/b/designer-status.appspot.com/o/ogp%2F77?alt=media&token=42bf30cd-2d0c-45a6-9371-18258c829a94" />
+  <!-- Compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
     integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script></script>
-  <!-- なぜnpmじゃnot definなのか -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script> -->
+  <!-- <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/black/pace-theme-center-circle.min.css" /> -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script> -->
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
   <link rel="stylesheet" href="./css/index.css">
-  <link rel="stylesheet" href="./css/common.css">
+  <link rel="stylesheet" href="./css/loading.css">
   <link rel="stylesheet" href="./css//reset.css">
 </head>
 
 <body>
-  <h1>ページ1</h1>
-
-
-  <!-- 合成するcanvasその1 -->
-  <canvas class="non" id="base" width="600" height="314"></canvas>
-
-  <div class="sliders">
-    <input class="input-range" type="range" name="0" min="0" max="10" step="2" value="6"
-      onchange="rangeValue(value,name)">
-    <input type="range" name="1" min="0" max="10" step="2" value="6" onchange="rangeValue(value,name)">
-    <input type="range" name="2" min="0" max="10" step="2" value="6" onchange="rangeValue(value,name)">
-    <input type="range" name="3" min="0" max="10" step="2" value="6" onchange="rangeValue(value,name)">
-    <input type="range" name="4" min="0" max="10" step="2" value="6" onchange="rangeValue(value,name)">
-    <input type="range" name="5" min="0" max="10" step="2" value="6" onchange="rangeValue(value,name)">
-  </div>
-  <div id="show">結果を表示する</div>
-
-  <!-- ここではじめてレンダリング addeveにするかinput btnにしてonchangeにするか -->
-  <!-- 合成するcanvasその2 -->
-  <div style="width:100%; height:100%;">
-    <canvas id="radarChart"></canvas>
+  <!--  -->
+  <div id="loader" class="loader hiddenChange">
+    <div class="duo duo1">
+      <div class="dot dot-a"></div>
+      <div class="dot dot-b"></div>
+    </div>
+    <div class="duo duo2">
+      <div class="dot dot-a"></div>
+      <div class="dot dot-b"></div>
+    </div>
   </div>
 
-  <!-- クエリパラやpostパラでなく、パスパラ的なので渡してみる -->
-  <div>名前つける:<input type="text" value="Your name" onchange="getName(this.value)"></div>
+  <div id="all-content">
+    <!--  -->
+    <div id="header-fixed">
+      <div id="header-bk">
+        <div id="header">デザイナーステータス</div>
+        <div class="follow-btn">
+          <a class="tw-follow-btn" href="https://twitter.com/Re_A9T?ref_src=twsrc%5Etfw" target="_blank"
+            onclick="window.open(this.href, 'window', 'width=600, height=400, menubar=no, toolbar=no, scrollbars=yes'); return false;">Follow</a>
+        </div>
+      </div>
+    </div>
 
-  <!--画像を合成し、storageへUP ここで、ページとぶときに、Inputnameをまず飛ばしたい(valueを取得) -->
-  <div id="create">診断する</div>
+    <div class="subheader">
+      <div class="greeting">
+        <div class="g-content">六項目のレーダーチャートであなたのデザイナーとして
+          の能力を自己診断します！ぜひシェア&フォローお願いします</div>
+      </div>
 
-  <!-- 合成結果用のcanvas こいつと、basepngを隠すなり遠いスクロールににする -->
-  <canvas class="non" id="fusion" width="600" height="314"></canvas>
+      <div class="explain">
+        以下の項目を入力し、あなたのデザイナーとしての特徴をグラフで表します！診断結果がイケてたら是非ツイートしてください。万が一微妙であればツイートして理想を教えてください🙇‍♂️
+      </div>
+    </div>
 
 
+    <div class="all-content">
+      <div>
+        <!-- 合成するcanvasその1 -->
+        <canvas class="non" id="base" width="600" height="314"></canvas>
+
+        <div class="slider-list">
+          <div class="sliders">
+            <label for="customRange1">目<spna class="thin">美しいものがわかる</spna></label>
+            <input type="range" class="custom-range" id="customRange1" name="0" min="0" max="10" step="2" value="4"
+              onchange="rangeValue(value,name)">
+            <label for="customRange1">手<spna class="thin">思い通りに表現できる</spna></label>
+            <input type="range" class="custom-range" id="customRange1" name="1" min="0" max="10" step="2" value="4"
+              onchange="rangeValue(value,name)">
+            <label for="customRange1">頭<spna class="thin">ものごとを設計できる</spna></label>
+            <input type="range" class="custom-range" id="customRange1" name="2" min="0" max="10" step="2" value="4"
+              onchange="rangeValue(value,name)">
+            <label for="customRange1">口<spna class="thin">考えを伝えられる</spna></label>
+            <input type="range" class="custom-range" id="customRange1" name="3" min="0" max="10" step="2" value="4"
+              onchange="rangeValue(value,name)">
+            <label for="customRange1">足<spna class="thin">ものごとを実行できる</spna></label>
+            <input type="range" class="custom-range" id="customRange1" name="4" min="0" max="10" step="2" value="4"
+              onchange="rangeValue(value,name)">
+            <label for="customRange1">心<spna class="thin">人に共感ができる</spna></label>
+            <input type="range" class="custom-range" id="customRange1" name="5" min="0" max="10" step="2" value="4"
+              onchange="rangeValue(value,name)">
+          </div>
+          <!-- <div id="show">グラフ表示</div> -->
+          <!-- <button id="show" type="button" class="btn btn-primary">グラフ確認</button> -->
+        </div>
+      </div>
+
+      <!-- ここではじめてレンダリング addeveにするかinput btnにしてonchangeにするか -->
+      <!-- 合成するcanvasその2 -->
+      <div style="width:100%; height:100%;">
+        <canvas class="hide" class="chart" id="radarChart"></canvas>
+      </div>
+
+      <!-- クエリパラやpostパラでなく、パスパラ的なので渡してみる -->
+      <!-- <div>名前つける:<input type="text" value="Your name" onchange="getName(this.value)"></div> -->
+      <!-- <div class="group">
+    <label for="text3" id="l_text3">あだ名</label>
+    <input id="text3" type="text" value="" onchange="getName(this.value)" placeholder="最強UIデザイナー">
+    <div class="text_underline"></div>
+  </div> -->
+
+      <!--画像を合成し、storageへUP ここで、ページとぶときに、Inputnameをまず飛ばしたい(valueを取得) -->
+      <!-- <div id="create">診断する</div> -->
+      <div id="tyuuou">
+        <button id="create" type="button" class="btn btn-primary">　診断する　</button>
+      </div>
+    </div>
+
+    <!-- 合成結果用のcanvas こいつと、basepngを隠すなり遠いスクロールににする -->
+    <canvas class="non" id="fusion" width="600" height="314"></canvas>
+  </div>
   <!-- <script src="../dist/index.bundle.js"></script> -->
   <script src="./bundle/index.bundle.js"></script>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 
 </html>

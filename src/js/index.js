@@ -7,8 +7,12 @@ import Chart from 'chart.js'
 // console.log(firebase.storage())
 
 import firebase from '../../config-firebase';
+const db = firebase.firestore();
+
 
 //DOM取得
+const loader = document.getElementById('loader');
+const contents = document.getElementById('all-content');
 const ctx = document.getElementById("radarChart");
 // ctx.width = window.innerWidth * 0.1;
 // ctx.height = window.innerHeight * 0.1;
@@ -17,13 +21,17 @@ const elem = document.getElementById('range');
 
 const elems = document.getElementsByClassName('range');
 
+const scroll = document.getElementById('scroll');
+
 //state設定
-const radarVals = [5, 3, 5, 3, 5, 3];
+const radarVals = [4, 4, 4, 4, 4, 4];
 let name = "";
+let uid;
+let score = 40.0;
 
 //asset設定
 const data = {
-    labels: ['Eye', 'Hand', 'Head', 'Mouth', 'Leg', 'Heart'],
+    labels: ['目', '手', '頭', '口', '足', '心'],
     datasets: [
         {
             label: 'My Second dataset',
@@ -51,7 +59,7 @@ const options = {// maintainAspectRatio: false,
         },
         pointLabels: {
             //pc版(16)と帰る必要あり(iphone10標準)
-            fontSize: 16
+            fontSize: 10
         },
         ticks: {
             beginAtZero: true,
@@ -78,12 +86,17 @@ window.onload = () => {
     //radarChartを描画 ここどうするかよな。
     // drawImage2();
 
-    //ボタンを押したら合成、そしてstorageへUP
+    //ボタンを押したら合成、そしてstorageへUP..そして、firestoreにradarvalをいれる。/scoreも?
     document.getElementById("create").addEventListener("click", () => {
-        concatCanvas("fusion", ["radarChart", "base"]).then(value => {
-            console.log(value); // => resolve!!
-            uploadStorage(value);
-        });
+        loader.classList.remove("hiddenChange")
+        contents.classList.add("hiddenChange")
+        clientStore();
+
+        // concatCanvas("fusion", ["radarChart", "base"])
+        //     .then(value => {
+        //         console.log(value); // => resolve!!
+        //         uploadStorage(value);
+        //     });
     });
 
 };
@@ -102,12 +115,17 @@ function drawBase() {
 async function concatCanvas(fusion, asset) {
     const canvas = document.getElementById(fusion);
     const ctx = canvas.getContext("2d");
+    //--スコア
+    ctx.font = "bold 24px Hiragino Kaku Gothic ProN";
+    ctx.fillStyle = "#636363";
+    ctx.fillText(score, 450, 41)
+    //--スコア
 
-    let dx = -100;
+    let dx = 0;
     for (let i = 0; i < asset.length; i++) {
         const image1 = await getImagefromCanvas(asset[i]);
         ctx.drawImage(image1, dx, 0, canvas.width, canvas.height);
-        dx = dx + 100;
+        dx = dx - 100;
     }
     //onloadとか上でしなくて大丈夫かな?
     const url = ctx.canvas.toDataURL();
@@ -135,28 +153,98 @@ window.getName = function (value) {
 //-----スライダー制御関数
 window.rangeValue = function (value, name) {
     const id = Number(name);
-    radarVals[id] = value
-}
-
-document.getElementById("show").onclick = function () {
+    radarVals[id] = Number(value);
+    console.log(radarVals)
+    score = colscore(radarVals);
+    console.log(score)
     const myRadarChart = new Chart(ctx, {
         type: 'radar',
         data: data,
         options: options,
     });
-};
+}
+
+//レーダー描画
+// document.getElementById("show").onclick = function () {
+//     const myRadarChart = new Chart(ctx, {
+//         type: 'radar',
+//         data: data,
+//         options: options,
+//     });
+// };
+
+//-------スコア関数
+function colscore(array) {
+    let sum = array.reduce(function (accumulator, currentValue, ) {
+        return accumulator + currentValue
+    })
+    sum = sum * 10 / 6
+    let result = sum.toFixed(1);
+    if (result == 0) {
+        result = "測定不能"
+    } else if (result == 100.0) {
+        result = "神の領域"
+    }
+    return result;
+}
+
+// //firestore関数
+async function clientStore() {
+    //つまりこいつは非同期処理で、取得が遅い。awaitかthenチェーンする必要あり。
+    uid = await db.collection('users').get().then(snap => {
+        // will return the collection size
+        return snap.size
+    });
+
+    // toString(uid)　なぜかきかない
+    console.log(uid += "") //きく
+    //usersコレクション作成&代入
+    const usersRef = db.collection('users');
+    usersRef.doc(uid).set({
+        radarVals: radarVals,
+        flag: true
+    })
+        .then(function (docRef) {
+            console.log("then等立つ");
+            concatCanvas("fusion", ["base", "radarChart"])
+                .then(value => {
+                    console.log(value); // => resolve!!
+                    uploadStorage(value);
+                });
+        })
+        .catch(function (error) {
+            console.error("Error adding document: ", error);
+        });
+    return "uid取得できた"
+}
+// let uid;
+// //つまりこいつは非同期処理で、取得が遅い。awaitかthenチェーンする必要あり。
+// await db.collection('users').get().then(snap => {
+// //     uid = snap.size // will return the collection size
+// //     return uid
+// // });
+// console.log(uid)
+
 
 //ひとまず、、つまり上記の理屈が正しい場合、.thenの中に、firebaseに関する関数を書けばよい。
 async function uploadStorage(url) {
+    // let uid;
+    // //つまりこいつは非同期処理で、取得が遅い。awaitかthenチェーンする必要あり。
+    // await db.collection('users').get().then(snap => {
+    //     uid = snap.size // will return the collection size
+    //     return uid
+    // });
+    // console.log(uid)
+
     const sRef = firebase.storage().ref()
-    const fileRef = sRef.child(`ogp/${name}`)
+    const fileRef = sRef.child(`ogp/${uid}`)
     url = url.substring(22);
     //多分ここら変が非同期処理。。
     fileRef.putString(url, "base64").then(function (snapshot) {
         fileRef.getDownloadURL().then(function (url) {
             console.log("ok");
         }).then(() => {
-            window.location.href = `https://designer-status.firebaseapp.com/result/${name}`;
+            window.location.href = `https://designer-status.firebaseapp.com/result/${uid}`;
         })
     });
 

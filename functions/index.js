@@ -32,49 +32,44 @@ const app = express()
 // bucketName = '<FILL ME>'
 
 
-// const genHtml = (name, url) => {
-//   const title = Math.floor(Math.random() * 11);
-//   const html = `<!DOCTYPE html>
-//     <html>
-//       <head>
-//         <meta charset="utf-8">
-//         <title>デザイナーステータス${title}</title>
-//         <meta name="twitter:card" content="summary_large_image" />
-//         <meta name="twitter:site" content="@uchibashi" />
-//         <meta property="og:url" content="https://designer-status.firebaseapp.com/" />
-//         <meta property="og:title" content="${name}の結果" />
-//         <meta property="og:description"${name}の結果" />
-//         <meta property="og:image" content=${url} />
-//       </head>
-//       <body>
-//         <div>診断結果</div>
-//         <p><img src=${url} alt="サンプル画像"></p>
-//         <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a>
-//         <script>
-//         location.href='${test}';
-//       </script>
-// <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-//       </body>
-//     </html>`;
-//   return html;
-// }
+const genHtml = (uid, publicUrl) => {
+  const html = `<!DOCTYPE html>
+  <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/ fb# prefix属性: http://ogp.me/ns/ prefix属性#">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>デザイナーステータス</title>
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@uchibashi" />
+  <meta property="og:url" content="https://designer-status.firebaseapp.com/result/${uid}" />
+  <meta property="og:title" content="デザイナーステータス" />
+  <meta property="og:description" content="デザイナー力を自己診断する自己満アプリです。" />
+  <meta property="og:image" content="${publicUrl}" />
+</head>
+      <body>      
+        <script>
+        location.href='/';
+      </script>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      </body>
+    </html>`;
+  return html;
+}
 
-// exports.result = functions.https.onRequest((request, response) => {
-//     if (request.params[0] !== undefined) {
-//         let param = request.params[0].slice(1)
-//         const paramName = param.substring(7);
-//         // const path = param.substring(7)
-//         const bucketName = 'designer-status.appspot.com';
-//         const filePath = `ogp/${paramName}`;
-//         const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(filePath)}?alt=media`;
 
-//         const html = genHtml(paramName, publicUrl)
-//         response.status(200).send(html)
-//     } else {
-//         response.status(200).send("Hello World")
-//     }
-// })
+//関数 非同期対策よいねー
+function updateDocument(db) {
+  // [START update_document]
+  // let usersRef = db.collection('users').doc(uid);
+  // Set the 'capital' field of the city
+  // let updateSingle = usersRef.update({ flag: false });
+  // [END update_document]
 
+  // return Promise.all([updateSingle]).then(val => {
+  // console.log('Update: ', val);
+  res.send(db)
+  // res.render('index.ejs', { uid: uid, url: publicUrl, radarVals: radarVals })
+  // });
+}
 
 
 ///----expressわからん
@@ -82,38 +77,54 @@ app.use(express.static('public'))
 
 
 app.get('/result/:uid', function (req, res) {
+  //ejsに送る値(URLから取得したもの)
   const uid = req.params.uid;
   const bucketName = 'designer-status.appspot.com';
   const filePath = `ogp/${uid}`;
   const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(filePath)}?alt=media`;
 
-  //ここでfirestoreから、ドキュメントを取得、、uidを使って？！
-  let radarVals = "test";
-
-  const usersRef = fireStore.collection('users').doc(uid);
-  console.log(usersRef);
-  usersRef.get()
+  let radarVals = "もしかしたらifで問題が";
+  //firestoreからejsに送るもの(radarsVals)
+  let usersRef = fireStore.collection('users').doc(uid);
+  usersRef.get(uid, publicUrl)
     .then(doc => {
       if (!doc.exists) {
-        //  response.send('No such document!')
-        radarVals = "no such"
+        res.send('no such')
       } else {
-        radarVals = doc.data()
-        res.render('index.ejs', { uid: uid, url: publicUrl, radarVals: doc.data() })
+        //----------ここからフラグ処理
+        //ドキュメントオブジェクト(docRef)のフラッグ
+        flag = doc.data().flag
+        radarVals = doc.data().radarVals
+        if (flag == false) {
+          res.send(genHtml(uid, publicUrl)); //これはとぶ。
+          // res.render('landing.ejs', { uid: uid, url: publicUrl, }) //なぜこれは。。
+        } else if (flag == true) {
+          //なぜか関数が通らない
+          let usersRef = fireStore.collection('users').doc(uid);
+          let updateSingle = usersRef.update({ flag: false });
+          //ただ、2回目いったらススメませんでたから。、そして値は渡せてないがとおった。
+          res.render('index.ejs', { uid: uid, url: publicUrl, radarVals: radarVals })
+        }
       }
     })
     .catch(err => {
       // response.send('not found')
-      radarVals = "no funcd"
+      res.send('エラーやな')
     })
 
-  // res.send(radarVals)
-
+  //なるほど、resは非同期だから、処理が早いほうが優先されるのか。
   // res.render('index.ejs', { uid: uid, url: publicUrl, radarVals: radarVals })
 });
 exports.result = functions.https.onRequest(app)
 
 //--------------------------
+// if (flag == false) {
+//   res.send(genHtml());
+//res.send("フラッグはfalseなので、ススメません。")
+// } else if (flag == true) {
+//let updateSingle = usersRef.update({ flag: false })
+// res.render('index.ejs', { uid: uid, url: publicUrl, radarVals: radarVals })
+// }
 
 //裏技？
 // const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(filePath)}?alt=media`

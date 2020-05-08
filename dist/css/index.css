@@ -1,106 +1,181 @@
+/* html,bodyタグの設定 */
+html, body{
+    margin: 0;         /* 余白の削除 */
+    padding: 0;        /* 余白の削除 */
+    width:100%;
+    height:100%;
+}
+
+/* ヘッダーの固定 */
+div#header-fixed
+{
+    position: fixed;            /* ヘッダーの固定 */
+    top: 0px;                   /* 位置(上0px) */
+    left: 0px;                  /* 位置(右0px) */
+    width: 100%;                /* 横幅100%　*/
+    height: 140px;              /* 縦幅140px */
+}
+ 
+ 
+div#header-bk { 
+	background-color:snow;     /* 背景色(黒) */
+	padding:10px 0 20px;       /* 上10px、下20pxをあける */
+	height:40px;              /* 縦の高さ110px */
+    width:100%;                /* 横の幅を100% */
+    /* margin-left: 4%; */
+    /* margin-right: 4%; */
+    display: flex;
+}
+#header{
+    padding-left: 4%;
+}
+.follow-btn{
+    padding-right: 24px;
+}
+a.tw-follow-btn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 66px;
+	height: 20px;
+	color: #fff;
+	font-size: 10px;
+	font-family: 'Helvetica Neue', Arial, sans-serif;
+	text-decoration: none;
+	line-height: 1;
+	background-color: #1b95e0;
+	border-radius: 3px;
+	letter-spacing: normal;
+}
+a.tw-follow-btn:hover {
+	background-color: #0c7abf;
+}
+    .hiddenChange {
+    display: none;
+    }
+
+div#header {    /* 表示領域を白枠で囲う */
+	height: 100%;              /* 縦の表示領域はheader-bkと同じ */
+	width: 960px;              /* 横の幅970px */
+	margin: auto;              /* 中央揃え */
+}
+
+#header{
+    font-weight:bold;
+}
+
+.subheader{
+    padding-top: 40px;
+    width:100%;
+    margin: 0 auto;
+}
+
+.greeting{
+    padding-top: 0 -6%;
+    background-color: #66CCFF;
+}
+.g-content{
+    color: snow;
+    margin-left: 4%;
+    margin-right: 4%;
+}
+
+.explain{
+    margin :20px 4%;
+}
+
+.all-content{
+     padding-top: 30px;
+}
+
 .non{
     display: none;
 }
 
+.hide{
+    visibility: hidden;
+}
+
+
+
 .sliders{
-    width: 40%;
-    text-align: center;
+    width: 60%;
     margin: 0 auto;
 }
 
-.sliders > input{
-    padding: 20px;
-  }
+.chart{
+    margin-top: 20px;
+}
 
-  input[type=range] {
-    -webkit-appearance: none;
-    margin: 10px 0;
+.custom-range{
+    margin-bottom: 10px;
+}
+
+
+.thin{
+    font-weight: lighter;
+    margin-left: 10px;
+    font-size: 12px;
+}
+
+/*  */
+
+.group{
+    text-align: center;
+}
+.l_text3{
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+#text3{
+    text-align: center;
+    font-size: 16px;
     width: 100%;
-  }
-  input[type=range]:focus {
+    border: none;
     outline: none;
-  }
-  input[type=range]::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 12.8px;
-    cursor: pointer;
-    animate: 0.2s;
-    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
-    background: #ac51b5;
-    border-radius: 25px;
-    border: 0px solid #000101;
-  }
-  input[type=range]::-webkit-slider-thumb {
-    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
-    border: 0px solid #000000;
-    height: 20px;
-    width: 39px;
-    border-radius: 7px;
-    background: #65001c;
-    cursor: pointer;
-    -webkit-appearance: none;
-    margin-top: -3.6px;
-  }
-  input[type=range]:focus::-webkit-slider-runnable-track {
-    background: #ac51b5;
-  }
-  input[type=range]::-moz-range-track {
-    width: 100%;
-    height: 12.8px;
-    cursor: pointer;
-    animate: 0.2s;
-    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
-    background: #ac51b5;
-    border-radius: 25px;
-    border: 0px solid #000101;
-  }
-  input[type=range]::-moz-range-thumb {
-    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
-    border: 0px solid #000000;
-    height: 20px;
-    width: 39px;
-    border-radius: 7px;
-    background: #65001c;
-    cursor: pointer;
-  }
-  input[type=range]::-ms-track {
-    width: 100%;
-    height: 12.8px;
-    cursor: pointer;
-    animate: 0.2s;
-    background: transparent;
-    border-color: transparent;
-    border-width: 39px 0;
-    color: transparent;
-  }
-  input[type=range]::-ms-fill-lower {
-    background: #ac51b5;
-    border: 0px solid #000101;
-    border-radius: 50px;
-    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
-  }
-  input[type=range]::-ms-fill-upper {
-    background: #ac51b5;
-    border: 0px solid #000101;
-    border-radius: 50px;
-    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
-  }
-  input[type=range]::-ms-thumb {
-    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
-    border: 0px solid #000000;
-    height: 20px;
-    width: 39px;
-    border-radius: 7px;
-    background: #65001c;
-    cursor: pointer;
-  }
-  input[type=range]:focus::-ms-fill-lower {
-    background: #ac51b5;
-  }
-  input[type=range]:focus::-ms-fill-upper {
-    background: #ac51b5;
-  }
-  
-  body {
-    padding: 30px;
-  }
+    padding-bottom: 8px;
+    box-sizing: border-box; /*横幅の解釈をpadding, borderまでとする*/
+}
+
+.text_underline{
+    
+    position: relative;
+    /*.text_underline::beforeの親要素*/
+    border-top: 1px solid #c2c2c2; /*text3の下線*/
+    width: 40%;
+
+}
+
+/*共通のstyle*/
+.text_underline::before,
+.text_underline::after{
+    position: absolute; 
+    bottom: 0px; /*中央配置*/
+    width: 0px; /*アニメーションで0pxから50%に*/
+    height: 1px; /*高さ*/
+    content: '';
+    background-color: blue; /*アニメーションの色*/
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+}
+
+/*中央から右へのアニメーション*/
+.text_underline::before{
+    left: 50%; /*中央配置*/
+}
+
+/*中央から左へのアニメーション*/
+.text_underline::after{ 
+    right: 50%; /*中央配置*/
+}
+
+#text3:focus + .text_underline::before,
+#text3:focus + .text_underline::after{
+    width: 50%;
+}
+
+#tyuuou{
+    margin-top: 20px;
+    text-align: center;
+}
