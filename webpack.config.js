@@ -3,7 +3,8 @@ module.exports = {
     entry: {
         index: './src/js/index.js',
         result: './src/js/result.js',
-        common: './src/js/common.js'
+        common: './src/js/common.js',
+        slider: './src/js/slider.js'
     },
     devtool: 'source-map',
     output: {

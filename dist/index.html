@@ -28,6 +28,12 @@
   <link rel="stylesheet" href="./css/index.css">
   <link rel="stylesheet" href="./css/loading.css">
   <link rel="stylesheet" href="./css//reset.css">
+  <!-- マテリアライズ -->
+  <!-- Compiled and minified CSS -->
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> -->
+  <!-- Compiled and minified JavaScript -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> -->
+
 </head>
 
 <body>
@@ -48,10 +54,10 @@
     <div id="header-fixed">
       <div id="header-bk">
         <div id="header">デザイナーステータス</div>
-        <div class="follow-btn">
+        <!-- <div class="follow-btn">
           <a class="tw-follow-btn" href="https://twitter.com/Re_A9T?ref_src=twsrc%5Etfw" target="_blank"
             onclick="window.open(this.href, 'window', 'width=600, height=400, menubar=no, toolbar=no, scrollbars=yes'); return false;">Follow</a>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -75,56 +81,69 @@
         <div class="slider-list">
           <div class="sliders">
             <label for="customRange1">目<spna class="thin">美しいものがわかる</spna></label>
-            <input type="range" class="custom-range" id="customRange1" name="0" min="0" max="10" step="2" value="4"
-              onchange="rangeValue(value,name)">
+            <div class="range-slider range-slider--dotted">
+              <input id="customRange1" class="custom-range range-slider__input js-dotted-range-slider" type="range"
+                name="0" value="4" min="0" max="10" step="0.5" onchange="rangeValue(value,name)">
+            </div>
             <label for="customRange1">手<spna class="thin">思い通りに表現できる</spna></label>
-            <input type="range" class="custom-range" id="customRange1" name="1" min="0" max="10" step="2" value="4"
-              onchange="rangeValue(value,name)">
-            <label for="customRange1">頭<spna class="thin">ものごとを設計できる</spna></label>
-            <input type="range" class="custom-range" id="customRange1" name="2" min="0" max="10" step="2" value="4"
-              onchange="rangeValue(value,name)">
+            <div class="range-slider range-slider--dotted">
+              <input id="customRange1" class="custom-range range-slider__input js-dotted-range-slider" type="range"
+                name="1" value="4" min="0" max="10" step="0.5" onchange="rangeValue(value,name)">
+            </div>
+            <label for="customRange1">頭<spna class="thin">美しいものがわかる</spna></label>
+            <div class="range-slider range-slider--dotted">
+              <input id="customRange1" class="custom-range range-slider__input js-dotted-range-slider" type="range"
+                name="2" value="4" min="0" max="10" step="0.5" onchange="rangeValue(value,name)">
+            </div>
             <label for="customRange1">口<spna class="thin">考えを伝えられる</spna></label>
-            <input type="range" class="custom-range" id="customRange1" name="3" min="0" max="10" step="2" value="4"
-              onchange="rangeValue(value,name)">
+            <div class="range-slider range-slider--dotted">
+              <input id="customRange1" class="custom-range range-slider__input js-dotted-range-slider" type="range"
+                name="3" value="4" min="0" max="10" step="0.5" onchange="rangeValue(value,name)">
+            </div>
             <label for="customRange1">足<spna class="thin">ものごとを実行できる</spna></label>
-            <input type="range" class="custom-range" id="customRange1" name="4" min="0" max="10" step="2" value="4"
-              onchange="rangeValue(value,name)">
+            <div class="range-slider range-slider--dotted">
+              <input id="customRange1" class="custom-range range-slider__input js-dotted-range-slider" type="range"
+                name="4" value="4" min="0" max="10" step="0.5" onchange="rangeValue(value,name)">
+            </div>
             <label for="customRange1">心<spna class="thin">人に共感ができる</spna></label>
-            <input type="range" class="custom-range" id="customRange1" name="5" min="0" max="10" step="2" value="4"
-              onchange="rangeValue(value,name)">
+            <div class="range-slider range-slider--dotted">
+              <input id="customRange1" class="custom-range range-slider__input js-dotted-range-slider" type="range"
+                name="5" value="4" min="0" max="10" step="0.5" onchange="rangeValue(value,name)">
+            </div>
+            <!-- <div id="show">グラフ表示</div> -->
+            <!-- <button id="show" type="button" class="btn btn-primary">グラフ確認</button> -->
           </div>
-          <!-- <div id="show">グラフ表示</div> -->
-          <!-- <button id="show" type="button" class="btn btn-primary">グラフ確認</button> -->
         </div>
-      </div>
 
-      <!-- ここではじめてレンダリング addeveにするかinput btnにしてonchangeにするか -->
-      <!-- 合成するcanvasその2 -->
-      <div style="width:100%; height:100%;">
-        <canvas class="hide" class="chart" id="radarChart"></canvas>
-      </div>
+        <!-- ここではじめてレンダリング addeveにするかinput btnにしてonchangeにするか -->
+        <!-- 合成するcanvasその2 -->
+        <div style="width:100%; height:100%;">
+          <canvas class="hide" class="chart" id="radarChart"></canvas>
+        </div>
 
-      <!-- クエリパラやpostパラでなく、パスパラ的なので渡してみる -->
-      <!-- <div>名前つける:<input type="text" value="Your name" onchange="getName(this.value)"></div> -->
-      <!-- <div class="group">
+        <!-- クエリパラやpostパラでなく、パスパラ的なので渡してみる -->
+        <!-- <div>名前つける:<input type="text" value="Your name" onchange="getName(this.value)"></div> -->
+        <!-- <div class="group">
     <label for="text3" id="l_text3">あだ名</label>
     <input id="text3" type="text" value="" onchange="getName(this.value)" placeholder="最強UIデザイナー">
     <div class="text_underline"></div>
   </div> -->
 
-      <!--画像を合成し、storageへUP ここで、ページとぶときに、Inputnameをまず飛ばしたい(valueを取得) -->
-      <!-- <div id="create">診断する</div> -->
-      <div id="tyuuou">
-        <button id="create" type="button" class="btn btn-primary">　診断する　</button>
+        <!--画像を合成し、storageへUP ここで、ページとぶときに、Inputnameをまず飛ばしたい(valueを取得) -->
+        <!-- <div id="create">診断する</div> -->
+        <div id="tyuuou">
+          <button id="create" type="button" class="btn btn-primary">　診断する　</button>
+        </div>
       </div>
-    </div>
 
-    <!-- 合成結果用のcanvas こいつと、basepngを隠すなり遠いスクロールににする -->
-    <canvas class="non" id="fusion" width="600" height="314"></canvas>
-  </div>
-  <!-- <script src="../dist/index.bundle.js"></script> -->
-  <script src="./bundle/index.bundle.js"></script>
-  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      <!-- 合成結果用のcanvas こいつと、basepngを隠すなり遠いスクロールににする -->
+      <canvas class="non" id="fusion" width="600" height="314"></canvas>
+    </div>
+    <!-- <script src="../dist/index.bundle.js"></script> -->
+    <script src="./bundle/index.bundle.js"></script>
+    <script src="./bundle/slider.bundle.js"></script>
+    <!-- <script src="../src/js/slider.js"></script> -->
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 
 </html>

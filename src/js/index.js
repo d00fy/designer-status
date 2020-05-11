@@ -117,7 +117,7 @@ async function concatCanvas(fusion, asset) {
     const ctx = canvas.getContext("2d");
     //--スコア
     ctx.font = "bold 24px Hiragino Kaku Gothic ProN";
-    ctx.fillStyle = "#636363";
+    ctx.fillStyle = "grey";
     ctx.fillText(score, 450, 41)
     //--スコア
 
@@ -125,6 +125,9 @@ async function concatCanvas(fusion, asset) {
     for (let i = 0; i < asset.length; i++) {
         const image1 = await getImagefromCanvas(asset[i]);
         ctx.drawImage(image1, dx, 0, canvas.width, canvas.height);
+        ctx.font = "bold 24px Hiragino Kaku Gothic ProN";
+        ctx.fillStyle = "grey";
+        ctx.fillText(score, 450, 41)
         dx = dx - 100;
     }
     //onloadとか上でしなくて大丈夫かな?

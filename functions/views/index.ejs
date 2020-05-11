@@ -141,10 +141,10 @@
     <div id="header-fixed">
         <div id="header-bk">
             <div id="header">デザイナーステータス</div>
-            <div class="follow-btn">
+            <!-- <div class="follow-btn">
                 <a class="tw-follow-btn" href="https://twitter.com/Re_A9T?ref_src=twsrc%5Etfw" target="_blank"
                     onclick="window.open(this.href, 'window', 'width=600, height=400, menubar=no, toolbar=no, scrollbars=yes'); return false;">Follow</a>
-            </div>
+            </div> -->
         </div>
     </div>
     <canvas id="myChart"></canvas>
@@ -158,9 +158,9 @@
         <div class="row">
             <div class="input-field col s3"></div>
             <div class="input-field col s6">
-                <input placeholder="最強UIデザイナー" id="first_name" type="text" value="" onChange=" setTweetButton(value)"
+                <input placeholder="必須" id="first_name" type="text" value="" onChange=" setTweetButton(value)"
                     class="validate">
-                <label for="first_name">おなまえ</label>
+                <label text-darken-3 for=" first_name">おなまえ</label>
             </div>
             <div class="input-field col s3"></div>
         </div>
@@ -303,7 +303,7 @@
         function setTweetButton(value) {
             $('#tweet-area').empty(); //既存のボタン消す
             // htmlでスクリプトを読んでるからtwttがエラーなく呼べる
-            value += "さんの六式デザインチャート！ -あなたもやってみよう！【デザイナーステータス】";
+            value += "の六式デザインチャート！ -あなたもやってみよう！【デザイナーステータス】";
             // オプションは公式よんで。
             twttr.widgets.createShareButton(
                 //拡散するURL、つまり、画像をクリックしたときの遷移先だと思う。いやカードそのもの？ /これないと他の人の時カードみれないのかも
@@ -330,6 +330,7 @@
             data: data,
             options: options,
         });
+        setTweetButton("あなた");
     </script>
 </body>
 
